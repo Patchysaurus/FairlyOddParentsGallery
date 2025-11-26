@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Fairly OddParents Character Gallery</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f1e3; /* Light cream/yellowish background */
+            padding-bottom: 50px;
+        }
+
+        .header-bg {
+            background: linear-gradient(135deg, #FF69B4, #3CB371); /* Pink and Green Gradient */
+            color: #ffffff;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-title {
+            font-family: 'Bungee Inline', cursive;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .character-card {
+            border: 5px solid #FF69B4; /* Pink border */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            height: 200px; /* Fixed height for consistent look */
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            background-color: #E6E0DD; /* Light gray for card body */
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .modal-header {
+            background-color: #3CB371; /* Medium Sea Green */
+            color: white;
+            border-bottom: 4px solid #FF69B4; /* Pink separator */
+        }
+        .modal-body {
+            background-color: #fcfcfc;
+        }
+        .btn-close {
+            filter: invert(1);
+        }
+        .modal-title {
+             font-family: 'Bungee Inline', cursive;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header-bg text-center">
+        <div class="container">
+            <h1 class="gallery-title">FAIRY WORLD & DIMMSDALE</h1>
+            <p class="lead">Meet the Cast of The Fairly OddParents</p>
+        </div>
+    </header>
+
+    <!-- Character Gallery Grid - Content will be populated by JavaScript -->
+    <main class="container">
+        <!-- We give this div an ID so JavaScript can find it and insert the cards -->
+        <div id="characterGallery" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
+            <!-- Cards will be inserted here by the JS loop -->
+        </div>
+    </main>
+
+    <!-- Character Info Modal -->
+    <div class="modal fade" id="characterModal" tabindex="-1" aria-labelledby="characterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="characterModalLabel">Character Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 text-center mb-3 mb-md-0">
+                            <!-- Placeholder image for the modal content -->
+                            <img id="modalImage" src="" alt="Character Image" class="img-fluid rounded-3 shadow-sm" style="max-height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="col-md-7">
+                            <h2 id="modalName" class="mb-1"></h2>
+                            <p class="text-secondary fw-bold" id="modalRole"></p>
+                            <hr>
+                            <p id="modalInfo"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script>
+        // 1. Character Data Array
+        const characters = [
+            { 
+                name: "Timmy Turner", 
+                role: "The Wishmaker", 
+                info: "Timmy is a 10-year-old boy who is granted fairy godparents to make his miserable life slightly better. He often wishes for things that cause chaos, but usually learns a lesson. He is easily recognizable by his pink hat.",
+                image_card: "images/timmy.png",
+                image_modal: "images/timmy.png"
+            },
+            { 
+                name: "Cosmo", 
+                role: "Fairy Godparent (Green)", 
+                info: "Cosmo is one of the titular Fairy Godparents. He is incredibly dim-witted and irresponsible, but deeply loyal and loving. He is the source of many of the show's most chaotic wishes, often granted without thinking.",
+                image_card: "images/cosmo.jpg",
+                image_modal: "images/cosmo.jpg"
+            },
+            { 
+                name: "Wanda", 
+                role: "Fairy Godparent (Pink)", 
+                info: "Wanda is the smart, responsible, and nagging counterpart to Cosmo. She often tries to prevent dangerous wishes and acts as the voice of reason. She is Cosmo's wife and Poof's mother.",
+                image_card: "images/wanda.jpg",
+                image_modal: "images/wanda.jpg"
+            },
+            { 
+                name: "Poof", 
+                role: "Fairy Baby", 
+                info: "Poof is the baby son of Cosmo and Wanda, and the first fairy baby born in thousands of years. His magic is less controlled than his parents', often resulting in random transformations based on his emotions.",
+                image_card: "images/poof.png",
+                image_modal: "images/poof.png"
+            },
+            { 
+                name: "Vicky", 
+                role: "The Mean Babysitter", 
+                info: "Vicky is Timmy's cruel, greedy, and sadistic 16-year-old babysitter who takes pleasure in tormenting him. Her mistreatment of Timmy is the main reason he was assigned Fairy Godparents.",
+                image_card: "images/vicky.png",
+                image_modal: "images/vicky.png"
+            },
+            { 
+                name: "Denzel Crocker", 
+                role: "Fairy-Obsessed Teacher", 
+                info: "Mr. Crocker is Timmy's twitchy, hunch-backed fifth-grade teacher. He is convinced that fairies exist and is obsessed with proving it, constantly trying to catch Timmy's godparents in the act.",
+                image_card: "images/denzel.png",
+                image_modal: "images/denzel.png"
+            },
+            { 
+                name: "Trixie Tang", 
+                role: "Timmy's Crush", 
+                info: "Trixie is the most popular and richest girl at school, whom Timmy is hopelessly in love with. While she acts mean to maintain her popularity, deep down, she may actually like Timmy.",
+                image_card: "images/trixie.png",
+                image_modal: "images/trixie.png"
+            },
+            { 
+                name: "Jorgen Von Strangle", 
+                role: "The Toughest Fairy", 
+                info: "Jorgen is the strongest and most imposing fairy in the universe, acting as the head of the Fairy World military/police force. He enforces Da Rules, the book of rules for godparents.",
+                image_card: "images/jorgen.jpg",
+                image_modal: "images/jorgen.jpg"
+            },
+            { 
+                name: "Anti-Cosmo", 
+                role: "Anti-Fairy Leader", 
+                info: "Anti-Cosmo is Cosmo's opposite counterpart. He is cold, highly intelligent, British-accented, and the leader of the Anti-Fairies. He seeks to plunge the world into chaos and unhappiness.",
+                image_card: "images/anticosmo.png",
+                image_modal: "images/anticosmo.png"
+            },
+            { 
+                name: "Anti-Wanda", 
+                role: "Anti-Fairy", 
+                info: "Anti-Wanda is Wanda's opposite counterpart. She is intelligent and organized but perpetually sad and depressed. She communicates primarily through squawks, but can speak clearly when she chooses.",
+                image_card: "images/AntiWanda.webp",
+                image_modal: "images/AntiWanda.webp"
+            },
+        ];
+
+        // 2. Function to generate gallery cards
+        function generateGallery() {
+            const galleryContainer = document.getElementById('characterGallery');
+            let galleryHTML = '';
+
+            // Use forEach loop to iterate over the characters array
+            characters.forEach(character => {
+                // Template literal to build the card HTML
+                galleryHTML += `
+                    <div class="col">
+                        <div class="card h-100 character-card" data-bs-toggle="modal" data-bs-target="#characterModal"
+                            data-name="${character.name}"
+                            data-role="${character.role}"
+                            data-info="${character.info}"
+                            data-image="${character.image_modal}">
+                            <img src="${character.image_card}" class="card-img-top" alt="${character.name}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">${character.name}</h5>
+                                <p class="card-text text-muted">${character.role}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Insert all generated HTML into the container in one go
+            galleryContainer.innerHTML = galleryHTML;
+        }
+
+        // Call the function to build the gallery when the script loads
+        generateGallery();
+
+
+        // 3. Modal Interaction Logic (Kept mostly the same)
+        const characterModal = document.getElementById('characterModal');
+
+        characterModal.addEventListener('show.bs.modal', event => {
+            const card = event.relatedTarget;
+
+            // Extract info from data-bs-* attributes set by the loop
+            const name = card.getAttribute('data-name');
+            const role = card.getAttribute('data-role');
+            const info = card.getAttribute('data-info');
+            const image = card.getAttribute('data-image');
+
+            const modalTitle = characterModal.querySelector('.modal-title');
+            const modalName = characterModal.querySelector('#modalName');
+            const modalRole = characterModal.querySelector('#modalRole');
+            const modalInfo = characterModal.querySelector('#modalInfo');
+            const modalImage = characterModal.querySelector('#modalImage');
+
+            // Update the modal's content
+            modalTitle.textContent = `${name}'s Profile`;
+            modalName.textContent = name;
+            modalRole.textContent = `Role: ${role}`;
+            modalInfo.textContent = info;
+            modalImage.src = image;
+            modalImage.alt = name;
+        });
+    </script>
+</body>
+</html>
